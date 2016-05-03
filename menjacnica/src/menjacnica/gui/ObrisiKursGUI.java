@@ -1,8 +1,5 @@
 package menjacnica.gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -15,8 +12,6 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.JCheckBox;
-
-import menjacnica.Valuta;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -42,13 +37,13 @@ public class ObrisiKursGUI extends JFrame {
 	private JCheckBox chckbxZaistaObrisiKurs;
 	private JLabel label;
 	
-	private MenjacnicaGUI glavniProzor;
-	private Valuta valuta;
+	//private MenjacnicaGUI glavniProzor;
+	//private Valuta valuta;
 
 	/**
 	 * Create the frame.
 	 */
-	public ObrisiKursGUI(MenjacnicaGUI glavniProzor, Valuta valuta) {
+	public ObrisiKursGUI() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ObrisiKursGUI.class.getResource("/icons/Screenshot.png")));
 		setResizable(false);
 		setTitle("Obrisi kurs");
@@ -75,11 +70,16 @@ public class ObrisiKursGUI extends JFrame {
 		contentPane.add(getBtnDodaj());
 		contentPane.add(getBtnOdus());
 		
-		//podesavanje
-		this.glavniProzor = glavniProzor;
-		this.valuta = valuta;
 		
-		prikaziValutu();
+		//this.glavniProzor = glavniProzor;
+		//this.valuta = valuta;
+		
+		textFieldNaziv.setText(GUIKontroler.prikazIzabraneValute().getNaziv());
+		textFieldSkraceniNaziv.setText(GUIKontroler.prikazIzabraneValute().getSkraceniNaziv());
+		textFieldSifra.setText("" + GUIKontroler.prikazIzabraneValute().getSifra());
+		textFieldProdajniKurs.setText("" + GUIKontroler.prikazIzabraneValute().getProdajni());
+		textFieldKupovniKurs.setText("" + GUIKontroler.prikazIzabraneValute().getKupovni());
+		textFieldSrednjiKurs.setText("" + GUIKontroler.prikazIzabraneValute().getSrednji());
 	}
 
 	private JLabel getLblSifra() {
@@ -177,7 +177,12 @@ public class ObrisiKursGUI extends JFrame {
 			btnDodaj = new JButton("Obrisi");
 			btnDodaj.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					obrisiValutu();
+					try {
+						GUIKontroler.obrisiValutu();
+						dispose();
+					} catch(Exception ex) {
+						JOptionPane.showMessageDialog(contentPane, ex.getMessage(), "Greska!", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			});
 			btnDodaj.setEnabled(false);
@@ -214,27 +219,5 @@ public class ObrisiKursGUI extends JFrame {
 			label = new JLabel("");
 		}
 		return label;
-	}
-	
-	private void prikaziValutu() {
-		// Prikaz podataka o valuti
-		textFieldNaziv.setText(valuta.getNaziv());
-		textFieldSkraceniNaziv.setText(valuta.getSkraceniNaziv());
-		textFieldSifra.setText(""+valuta.getSifra());
-		textFieldProdajniKurs.setText(""+valuta.getProdajni());
-		textFieldKupovniKurs.setText(""+valuta.getKupovni());
-		textFieldSrednjiKurs.setText(""+valuta.getSrednji());				
-	}
-
-	private void obrisiValutu() {
-		try{
-			glavniProzor.sistem.obrisiValutu(valuta);
-			
-			glavniProzor.prikaziSveValute();
-			dispose();
-		} catch (Exception e1) {
-			JOptionPane.showMessageDialog(contentPane, e1.getMessage(),
-					"Greska", JOptionPane.ERROR_MESSAGE);
-		}
 	}
 }
