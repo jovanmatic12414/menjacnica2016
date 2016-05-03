@@ -55,6 +55,7 @@ public class GUIKontroler {
 		novaValuta.setSrednji(Double.parseDouble(srednji));
 		novaValuta.setKupovni(Double.parseDouble(kupovni));
 		menjacnicaInterfejs.dodajValutu(novaValuta);
+		menjacnicaGui.osveziTabelu();
 	}
 	
 	public static LinkedList<Valuta> getKursnaLista() {
@@ -73,7 +74,7 @@ public class GUIKontroler {
 	
 	public static void obrisiValutu() {
 		menjacnicaInterfejs.obrisiValutu(menjacnicaGui.vratiIzabranuValutu());
-		menjacnicaGui.prikaziSveValute();
+		menjacnicaGui.osveziTabelu();
 	}
 	
 	public static void otvoriProzorIzvrsiZamenuGUI() {
@@ -89,7 +90,7 @@ public class GUIKontroler {
 			if(returnValuta == JFileChooser.APPROVE_OPTION) {
 				File fajl = fc.getSelectedFile();
 				menjacnicaInterfejs.ucitajIzFajla(fajl.getAbsolutePath());
-				menjacnicaGui.prikaziSveValute();
+				menjacnicaGui.osveziTabelu();
 			}
 		} catch(Exception e1) {
 			JOptionPane.showMessageDialog(menjacnicaGui.getContentPane(), e1.getMessage(), "Greska!", JOptionPane.ERROR_MESSAGE);
